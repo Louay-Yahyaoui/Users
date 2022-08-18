@@ -31,7 +31,33 @@ app.get('/api/users',(req,res)=>
       res.send(array);
   });
 
-})
+});
+app.post('/api/users/:_id/exercises',(req,res)=>
+  {
+    console.log("start");
+    let id=req.body._id;
+    let description=req.body.description;
+    let duration=req.body.duration;
+    let date=req.body.date;
+    if (!date)
+        date=new Date();
+    else
+        date=new Date(date);
+    date=date.toDateString();
+    if ((description)&&(duration))
+    User.findById(id,(err,user)=>
+    {
+      if (!err)
+      {
+        var exercise=new Exercise({"_id":id,"description":desciption,
+                                "duration":duration,"date":date});
+      exercise.save((err,ex)=>
+        {
+          if(!err)         res.json({"_id":user._id,"username":user.username,         "description":ex.description,"duration":ex.duration,"date":ex.date});
+        }
+      );
+    }});
+      });
 
 
 
